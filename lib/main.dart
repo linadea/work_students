@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'core/l10n/l10n.dart';
 import 'ui/pages/main_page/views/main_page.dart';
 
 void main() {
@@ -12,9 +13,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
+      title: 'Work Student',
+      translations: Messages(),
+      locale: const Locale('uk', 'UA'),
+      fallbackLocale: const Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: const MainPage(),
     );
   }
 }

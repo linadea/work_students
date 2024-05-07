@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../widgets/custom_button.dart';
@@ -85,9 +86,9 @@ class _MainPageState extends State<MainPage> {
                 child: Center(
                   child: Column(
                     children: [
-                      const Text(
-                        'Хто ви?',
-                        style: TextStyle(
+                      Text(
+                        'who_are_you'.tr,
+                        style: const TextStyle(
                           color: textColorDark,
                           fontFamily: 'Roboto',
                           fontSize: 20,
@@ -96,19 +97,19 @@ class _MainPageState extends State<MainPage> {
                         textAlign: TextAlign.center,
                       ),
                       CustomCheckboxButton(
-                        text: 'Я студент',
+                        text: 'i_am_a_student'.tr,
                         iconName: 'assets/svg/student.svg',
                         onChanged: (value) {},
                       ),
                       const SizedBox(height: 16),
                       CustomIconButton(
-                        text: 'Я роботодавець',
+                        text: 'i_am_an_employer'.tr,
                         iconName: 'assets/svg/client.svg',
                         onTap: () {},
                       ),
                       const SizedBox(height: 16),
                       CustomButton(
-                        text: 'Продовжити',
+                        text: 'continue'.tr,
                         onTap: () {},
                       ),
                     ],
