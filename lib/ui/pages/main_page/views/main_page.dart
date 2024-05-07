@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_checkbox_button.dart';
-import '../../../widgets/custom_icon_button.dart';
 import '../../../widgets/gradient_border_container.dart';
 
 class MainPage extends StatefulWidget {
@@ -96,18 +95,19 @@ class _MainPageState extends State<MainPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      const SizedBox(height: 38),
                       CustomCheckboxButton(
                         text: 'i_am_a_student'.tr,
                         iconName: 'assets/svg/student.svg',
                         onChanged: (value) {},
                       ),
-                      const SizedBox(height: 16),
-                      CustomIconButton(
+                      const SizedBox(height: 18),
+                      CustomCheckboxButton(
                         text: 'i_am_an_employer'.tr,
                         iconName: 'assets/svg/client.svg',
-                        onTap: () {},
+                        onChanged: (value) {},
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 38),
                       CustomButton(
                         text: 'continue'.tr,
                         onTap: () {},
