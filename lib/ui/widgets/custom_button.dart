@@ -5,11 +5,13 @@ import '../../core/constants/colors.dart';
 class CustomButton extends StatefulWidget {
   final String text;
   final void Function()? onTap;
+  final bool isActive;
 
   const CustomButton({
     super.key,
     required this.text,
     this.onTap,
+    this.isActive = true,
   });
 
   @override
@@ -20,12 +22,14 @@ class _CustomButtonState extends State<CustomButton> {
   bool _isPressed = false;
 
   void _onTapDown(TapDownDetails details) {
+    if (!widget.isActive) return;
     setState(() {
       _isPressed = true;
     });
   }
 
   void _onTapUp(TapUpDetails details) {
+    if (!widget.isActive) return;
     setState(() {
       _isPressed = false;
     });
@@ -42,6 +46,22 @@ class _CustomButtonState extends State<CustomButton> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = widget.isActive
+        ? (_isPressed ? Colors.white : mainColor)
+        : unactiveColor;
+
+    final borderColor = widget.isActive ? mainColor : unactiveColor;
+
+    TextStyle textStyle = TextStyle(
+      color: widget.isActive
+          ? (_isPressed ? textColorLight : Colors.white)
+          : Colors.white,
+      fontFamily: 'Roboto',
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 2,
+    );
+
     return GestureDetector(
       onTapDown: _onTapDown,
       onTapUp: _onTapUp,
@@ -52,22 +72,16 @@ class _CustomButtonState extends State<CustomButton> {
         height: 44,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: _isPressed ? Colors.white : mainColor,
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: mainColor, width: 1),
+          border: Border.all(color: borderColor, width: 1),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 200),
-              style: TextStyle(
-                color: _isPressed ? textColorLight : Colors.white,
-                fontFamily: 'Roboto',
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                letterSpacing: 2,
-              ),
+              style: textStyle,
               child: Text(widget.text.toUpperCase()),
             ),
           ],

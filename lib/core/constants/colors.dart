@@ -8,6 +8,6 @@ const Color accentColor = Color(0xFFFF2F01);
 const Color textColorDark = Color(0xFF19191B);
 const Color textColorLight = Color(0xFF4D4D4D);
 const Color greyColor = Color(0xFF757575);
-// const Color borderColor = Color(0xFFDEDEDE);
+const Color unactiveColor = Color(0xFFDEDEDE);
 const Color containerColor = Color(0xFFFBFBFB);
 const Color shadowColor = Color.fromRGBO(0, 0, 0, 0.2);

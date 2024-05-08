@@ -6,6 +6,7 @@ import '../../core/constants/colors.dart';
 class CustomCheckboxButton extends StatefulWidget {
   final String text;
   final String? iconName;
+  final bool? isChecked;
   final void Function(bool)? onChanged;
 
   const CustomCheckboxButton({
@@ -13,6 +14,7 @@ class CustomCheckboxButton extends StatefulWidget {
     required this.text,
     required this.iconName,
     this.onChanged,
+    this.isChecked,
   });
 
   @override
@@ -28,6 +30,22 @@ class _CustomCheckboxButtonState extends State<CustomCheckboxButton> {
     });
     if (widget.onChanged != null) {
       widget.onChanged!(_isChecked);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isChecked = widget.isChecked ?? false;
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomCheckboxButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isChecked != widget.isChecked) {
+      setState(() {
+        _isChecked = widget.isChecked ?? false;
+      });
     }
   }
 

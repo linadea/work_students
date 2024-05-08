@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'core/l10n/l10n.dart';
-import 'ui/pages/main_page/views/main_page.dart';
+import 'core/routes.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,7 +19,8 @@ class MainApp extends StatelessWidget {
       locale: const Locale('uk', 'UA'),
       fallbackLocale: const Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
-      home: const MainPage(),
+      getPages: AppPages.routes,
+      initialRoute: Routes.HOME,
     );
   }
 }

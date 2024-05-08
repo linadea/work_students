@@ -6,6 +6,7 @@ import '../../../../core/constants/colors.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_checkbox_button.dart';
 import '../../../widgets/gradient_border_container.dart';
+import '../controllers/main_page_controller.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -16,6 +17,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final textController = TextEditingController();
+  final c = Get.find<MainPageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -96,22 +98,25 @@ class _MainPageState extends State<MainPage> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 38),
-                      CustomCheckboxButton(
-                        text: 'i_am_a_student'.tr,
-                        iconName: 'assets/svg/student.svg',
-                        onChanged: (value) {},
-                      ),
+                      Obx(() => CustomCheckboxButton(
+                            text: 'i_am_a_student'.tr,
+                            iconName: 'assets/svg/student.svg',
+                            isChecked: c.isStudent.value,
+                            onChanged: (value) => c.setStudent(value),
+                          )),
                       const SizedBox(height: 18),
-                      CustomCheckboxButton(
-                        text: 'i_am_an_employer'.tr,
-                        iconName: 'assets/svg/client.svg',
-                        onChanged: (value) {},
-                      ),
+                      Obx(() => CustomCheckboxButton(
+                            text: 'i_am_an_employer'.tr,
+                            iconName: 'assets/svg/client.svg',
+                            isChecked: c.isEmployer.value,
+                            onChanged: (value) => c.setEmployer(value),
+                          )),
                       const SizedBox(height: 38),
-                      CustomButton(
-                        text: 'continue'.tr,
-                        onTap: () {},
-                      ),
+                      Obx(() => CustomButton(
+                            text: 'continue'.tr,
+                            isActive: c.isStudent.value || c.isEmployer.value,
+                            onTap: () {},
+                          )),
                     ],
                   ),
                 ),
