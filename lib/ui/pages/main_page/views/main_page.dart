@@ -115,7 +115,7 @@ class _MainPageState extends State<MainPage> {
                       Obx(() => CustomButton(
                             text: 'continue'.tr,
                             isActive: c.isStudent.value || c.isEmployer.value,
-                            onTap: () {},
+                            onTap: () => Get.toNamed('/auth'),
                           )),
                     ],
                   ),

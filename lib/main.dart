@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'core/dependencies.dart';
 import 'core/l10n/l10n.dart';
 import 'core/routes.dart';
 
 void main() {
+  setupDependencies();
   runApp(const MainApp());
 }
 
