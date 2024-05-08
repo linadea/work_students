@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../widgets/custom_button.dart';
+import '../../../widgets/custom_icon_button.dart';
 import '../../../widgets/gradient_border_container.dart';
 import '../../../widgets/labeled_input_field.dart';
 import '../controllers/auth_page_controller.dart';
@@ -43,12 +44,66 @@ class AuthPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   GradientBorderContainer(
                     width: MediaQuery.of(context).size.width - 32 * 2,
-                    height: 281,
-                    child: const Column(
-                      children: [],
+                    // height: 281,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 29, right: 29, top: 41, bottom: 41),
+                      child: Column(
+                        children: [
+                          Text('login_or_register'.tr,
+                              style: const TextStyle(
+                                color: textColorDark,
+                                fontFamily: 'Roboto',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              )),
+                          const SizedBox(height: 20),
+                          LabeledInputField(
+                            label: 'country_region'.tr,
+                          ),
+                          const SizedBox(height: 18),
+                          LabeledInputField(
+                            label: 'phone_number'.tr,
+                          ),
+                          const SizedBox(height: 18),
+                          CustomButton(
+                            text: 'continue'.tr,
+                            width: MediaQuery.of(context).size.width - 32 * 2,
+                          ),
+                          const SizedBox(height: 18),
+                          Text('or'.tr,
+                              style: const TextStyle(
+                                color: textColorDark,
+                                fontFamily: 'Roboto',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                              )),
+                          const SizedBox(height: 18),
+                          CustomIconButton(
+                            iconName: 'assets/svg/mail.svg',
+                            text: 'use_email'.tr,
+                            width: MediaQuery.of(context).size.width - 32 * 2,
+                            onTap: () {},
+                          ),
+                          const SizedBox(height: 18),
+                          CustomIconButton(
+                            iconName: 'assets/svg/google.svg',
+                            text: 'sign_in_with_google'.tr,
+                            width: MediaQuery.of(context).size.width - 32 * 2,
+                            onTap: () {},
+                          ),
+                          const SizedBox(height: 18),
+                          CustomIconButton(
+                            iconName: 'assets/svg/facebook.svg',
+                            text: 'login_via_facebook'.tr,
+                            width: MediaQuery.of(context).size.width - 32 * 2,
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

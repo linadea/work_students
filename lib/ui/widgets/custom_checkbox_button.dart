@@ -8,6 +8,8 @@ class CustomCheckboxButton extends StatefulWidget {
   final String? iconName;
   final bool? isChecked;
   final void Function(bool)? onChanged;
+  final double? width;
+  final double? height;
 
   const CustomCheckboxButton({
     super.key,
@@ -15,6 +17,8 @@ class CustomCheckboxButton extends StatefulWidget {
     required this.iconName,
     this.onChanged,
     this.isChecked,
+    this.width,
+    this.height,
   });
 
   @override
@@ -55,8 +59,8 @@ class _CustomCheckboxButtonState extends State<CustomCheckboxButton> {
       onTap: _handleTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        width: 272,
-        height: 44,
+        width: widget.width ?? 272,
+        height: widget.height ?? 49,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: _isChecked ? mainColor : Colors.white,
