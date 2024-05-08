@@ -7,12 +7,16 @@ class CustomIconButton extends StatefulWidget {
   final String text;
   final void Function()? onTap;
   final String? iconName;
+  final double? width;
+  final double? height;
 
   const CustomIconButton({
     super.key,
     required this.text,
     this.onTap,
     required this.iconName,
+    this.width,
+    this.height,
   });
 
   @override
@@ -51,8 +55,8 @@ class _CustomIconButtonState extends State<CustomIconButton> {
       onTapCancel: _onTapCancel,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        width: 272,
-        height: 44,
+        width: widget.width ?? 272,
+        height: widget.height ?? 49,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: _isPressed ? mainColor : Colors.white,

@@ -66,7 +66,6 @@ class _LabeledInputFieldState extends State<LabeledInputField> {
               fontFamily: 'Roboto',
               fontSize: 16,
               fontWeight: FontWeight.w300,
-              // height: 20,
             ),
             keyboardType: widget.keyboardType,
             textInputAction: widget.textInputAction,
