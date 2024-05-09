@@ -16,6 +16,7 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final containerWidth = MediaQuery.of(context).size.width - 32 * 2;
     return Scaffold(
         backgroundColor: backgroundColor,
         body: SafeArea(
@@ -46,8 +47,7 @@ class AuthPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   GradientBorderContainer(
-                    width: MediaQuery.of(context).size.width - 32 * 2,
-                    // height: 281,
+                    width: containerWidth,
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 29, right: 29, top: 41, bottom: 41),
@@ -71,7 +71,7 @@ class AuthPage extends StatelessWidget {
                           const SizedBox(height: 18),
                           CustomButton(
                             text: 'continue'.tr,
-                            width: MediaQuery.of(context).size.width - 32 * 2,
+                            width: containerWidth,
                           ),
                           const SizedBox(height: 18),
                           Text('or'.tr,
@@ -85,21 +85,21 @@ class AuthPage extends StatelessWidget {
                           CustomIconButton(
                             iconName: 'assets/svg/mail.svg',
                             text: 'use_email'.tr,
-                            width: MediaQuery.of(context).size.width - 32 * 2,
+                            width: containerWidth,
                             onTap: () {},
                           ),
                           const SizedBox(height: 18),
                           CustomIconButton(
                             iconName: 'assets/svg/google.svg',
                             text: 'sign_in_with_google'.tr,
-                            width: MediaQuery.of(context).size.width - 32 * 2,
+                            width: containerWidth,
                             onTap: () {},
                           ),
                           const SizedBox(height: 18),
                           CustomIconButton(
                             iconName: 'assets/svg/facebook.svg',
                             text: 'login_via_facebook'.tr,
-                            width: MediaQuery.of(context).size.width - 32 * 2,
+                            width: containerWidth,
                             onTap: () {},
                           ),
                         ],

@@ -27,60 +27,53 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Positioned(
-              left: 32,
-              right: 32,
-              top: 76,
-              bottom: 487,
-              child: Container(
-                width: 326,
-                height: 281,
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(32.0),
-                      child: SvgPicture.asset(
-                        'assets/svg/logo.svg',
-                        height: 100,
-                      ),
+            Container(
+              width: 326,
+              height: 281,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: SvgPicture.asset(
+                      'assets/svg/logo.svg',
+                      height: 100,
                     ),
-                    Container(
-                      width: 219,
-                      height: 48,
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      alignment: Alignment.center,
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'WORK [STUDENTS]',
-                            style: TextStyle(
-                              color: textColorDark,
-                              fontFamily: 'Roboto',
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              height: 1,
-                              letterSpacing: 6,
-                              textBaseline: TextBaseline.alphabetic,
-                            ),
-                            textAlign: TextAlign.center,
+                  ),
+                  Container(
+                    width: 219,
+                    height: 48,
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    alignment: Alignment.center,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'WORK [STUDENTS]',
+                          style: TextStyle(
+                            color: textColorDark,
+                            fontFamily: 'Roboto',
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            height: 1,
+                            letterSpacing: 6,
+                            textBaseline: TextBaseline.alphabetic,
                           ),
-                        ],
-                      ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 32),
             Center(
                 child: GradientBorderContainer(
-              width: 326.0,
-              height: 326.0,
+              width: MediaQuery.of(context).size.width - 32 * 2,
               borderWidth: 3.0,
               child: Padding(
                 padding: const EdgeInsets.all(27.0),
@@ -115,8 +108,12 @@ class _MainPageState extends State<MainPage> {
                       Obx(() => CustomButton(
                             text: 'continue'.tr,
                             isActive: c.isStudent.value || c.isEmployer.value,
-                            onTap: () => Get.toNamed('/auth'),
+                            onTap: () => Get.toNamed('/auth',
+                                arguments: Transition.zoom),
                           )),
+                      const SizedBox(
+                        height: 40,
+                      )
                     ],
                   ),
                 ),
