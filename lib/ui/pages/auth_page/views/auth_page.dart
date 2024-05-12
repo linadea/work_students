@@ -17,6 +17,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final containerWidth = MediaQuery.of(context).size.width - 32 * 2;
+
     return Scaffold(
         backgroundColor: backgroundColor,
         body: SafeArea(
