@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'offer.dart';
+import 'offer_entity.dart';
 
-part 'person.freezed.dart';
+part 'person_entity.freezed.dart';
 
 @freezed
-class Person with _$Person {
-  const factory Person.student({
+class PersonEntity with _$PersonEntity {
+  const factory PersonEntity.student({
     required String? id,
     required String? firstName,
     required String? lastName,
@@ -19,10 +19,10 @@ class Person with _$Person {
     String? education,
     String? skills,
     String? desiredSalary,
-    @Default([]) List<Offer> offers,
+    @Default([]) List<OfferEntity> offers,
   }) = Student;
 
-  const factory Person.customer({
+  const factory PersonEntity.customer({
     required String? id,
     required String? firstName,
     required String? lastName,
@@ -32,6 +32,6 @@ class Person with _$Person {
     String? company,
     String? position,
     String? city,
-    @Default([]) List<Person>? students,
+    @Default([]) List<PersonEntity>? students,
   }) = Customer;
 }
