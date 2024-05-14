@@ -34,4 +34,6 @@ class PersonEntity with _$PersonEntity {
     String? city,
     List<PersonEntity>? students,
   }) = Customer;
+
+  const factory PersonEntity.empty({@Default('0') String? id}) = Empty;
 }

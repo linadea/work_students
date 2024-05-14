@@ -14,7 +14,12 @@ class Messages extends Translations {
           'or': 'or',
           'use_email': 'Use email',
           'sign_in_with_google': 'Sign in with Google',
-          'login_via_facebook': 'Sign in with Facebook'
+          'login_via_facebook': 'Sign in with Facebook',
+          'offers': 'Offers',
+          'my_offers': 'My offers',
+          'contacts': 'Contacts',
+          'profile': 'Profile',
+          'students': 'Students',
         },
         'uk_UA': {
           'who_are_you': 'Хто ви?',
@@ -27,7 +32,12 @@ class Messages extends Translations {
           'or': 'або',
           'use_email': 'Використати email',
           'sign_in_with_google': 'Увійти через Google',
-          'login_via_facebook': 'Увійти через Facebook'
+          'login_via_facebook': 'Увійти через Facebook',
+          'offers': 'Пропозиції',
+          'my_offers': 'Мої пропозиції',
+          'contacts': 'Контакти',
+          'profile': 'Профіль',
+          'students': 'Студенти',
         },
       };
 }

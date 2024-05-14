@@ -73,6 +73,10 @@ class AuthPage extends StatelessWidget {
                           CustomButton(
                             text: 'continue'.tr,
                             width: containerWidth,
+                            onTap: () => Get.find<AuthPageController>()
+                                .signIn()
+                                .then((_) => Get.offAllNamed('/offers',
+                                    arguments: Transition.zoom)),
                           ),
                           const SizedBox(height: 18),
                           Text('or'.tr,

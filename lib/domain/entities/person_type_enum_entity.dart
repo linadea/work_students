@@ -1,1 +1,1 @@
-enum PersonTypeEnumEntity { student, customer }
+enum PersonTypeEnumEntity { undefined, student, customer }

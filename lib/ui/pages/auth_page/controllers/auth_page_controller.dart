@@ -10,7 +10,7 @@ class AuthPageController extends GetxController {
   final RxString email = ''.obs;
   final RxString password = ''.obs;
 
-  final personController = Get.find<GlobalPersonController>();
+  final _personController = Get.find<GlobalPersonController>();
 
   void onEmailChanged(String value) {
     email.value = value;
@@ -28,10 +28,10 @@ class AuthPageController extends GetxController {
 
     try {
       await auth.signIn(email: email.value, password: password.value);
-      if (personController.person != null) {
+      if (_personController.person != null) {
         final person =
-            await personUsecases.getAllPersons(personController.personType!);
-        personController.setPerson(person);
+            await personUsecases.getAllPersons(_personController.personType!);
+        _personController.setPerson(person);
       }
     } catch (e) {
       Get.snackbar(
