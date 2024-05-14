@@ -19,7 +19,7 @@ class PersonEntity with _$PersonEntity {
     String? education,
     String? skills,
     String? desiredSalary,
-    @Default([]) List<OfferEntity> offers,
+    List<OfferEntity>? offers,
   }) = Student;
 
   const factory PersonEntity.customer({
@@ -32,6 +32,6 @@ class PersonEntity with _$PersonEntity {
     String? company,
     String? position,
     String? city,
-    @Default([]) List<PersonEntity>? students,
+    List<PersonEntity>? students,
   }) = Customer;
 }
