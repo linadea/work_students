@@ -72,7 +72,7 @@ class MockPersonRepository implements PersonRepository {
                           title: 'Junior UI/UX Designer',
                           description:
                               'Ключові завдання:\nРозробка дизайну нових розділів/сторінок на вебсайтах та додатках\nПідготовка макетів для розробників, оновлення та розширення UI Kit\nДослідження дизайнерських рішень, збір та аналіз референсів\n\nДосвід та навички:\nДосвід створення дизайну сайтів від 1 року\nВисокий рівень володіння Figma, Adobe Photoshop',
-                          price: 500,
+                          salary: '500\$/місяць',
                           employment: 'Повна зайнятість',
                           customer: _getCustomer(),
                         )),

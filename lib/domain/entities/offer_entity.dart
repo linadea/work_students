@@ -11,7 +11,7 @@ class OfferEntity with _$OfferEntity {
     required String title,
     required PersonEntity customer,
     required String description,
-    required double price,
+    required String salary,
     required String employment,
   }) = _OfferEntity;
 }
