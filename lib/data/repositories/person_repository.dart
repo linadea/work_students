@@ -16,7 +16,7 @@ class MockPersonRepository implements PersonRepository {
       education: 'ПЗВО “ІТ СТЕП Університет”',
       employment: 'Повна зайнятість, віддалена',
       experience: 'Немає',
-      imageUrl: 'adeline.jpg',
+      imageUrl: 'adelina.png',
     );
   }
 
@@ -27,7 +27,7 @@ class MockPersonRepository implements PersonRepository {
       lastName: 'Бережанський',
       phone: '+380 50 345 67 89',
       email: 'markberezh@gmail.com',
-      imageUrl: 'mark',
+      imageUrl: 'mark.png',
       company: 'N-iX',
       position: 'HR менеджер',
       city: 'Львів',
@@ -38,19 +38,21 @@ class MockPersonRepository implements PersonRepository {
   Future<PersonEntity> getAllPersons(PersonTypeEnumEntity personType) async {
     if (personType == PersonTypeEnumEntity.student) {
       return _getStudent().maybeWhen(
-          student: (id,
-                  firstName,
-                  lastName,
-                  phone,
-                  email,
-                  imageUrl,
-                  position,
-                  employment,
-                  experience,
-                  education,
-                  skills,
-                  desiredSalary,
-                  _) =>
+          student: (
+            id,
+            firstName,
+            lastName,
+            phone,
+            email,
+            imageUrl,
+            position,
+            employment,
+            experience,
+            education,
+            skills,
+            desiredSalary,
+            _,
+          ) =>
               PersonEntity.student(
                 id: id,
                 firstName: firstName,
@@ -79,8 +81,18 @@ class MockPersonRepository implements PersonRepository {
           orElse: () => throw ArgumentError('Invalid entity'));
     } else {
       return _getCustomer().maybeWhen(
-          customer: (id, firstName, lastName, phone, email, imageUrl, company,
-                  position, city, _) =>
+          customer: (
+            id,
+            firstName,
+            lastName,
+            phone,
+            email,
+            imageUrl,
+            company,
+            position,
+            city,
+            _,
+          ) =>
               PersonEntity.customer(
                 id: id,
                 firstName: firstName,
