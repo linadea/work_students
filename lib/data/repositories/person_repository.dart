@@ -1,8 +1,7 @@
-import 'package:work_students/domain/entities/person_entity.dart';
-import 'package:work_students/domain/repositories/person_repository.dart';
-
 import '../../domain/entities/offer_entity.dart';
+import '../../domain/entities/person_entity.dart';
 import '../../domain/entities/person_type_enum_entity.dart';
+import '../../domain/repositories/person_repository.dart';
 
 class MockPersonRepository implements PersonRepository {
   PersonEntity _getStudent() {

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:work_students/domain/entities/person_type_enum_entity.dart';
 
 import '../../domain/entities/person_entity.dart';
+import '../../domain/entities/person_type_enum_entity.dart';
 
 class GlobalPersonController extends GetxController {
   Rx<PersonEntity>? _person;
