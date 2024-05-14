@@ -10,10 +10,10 @@ class PersonEntity with _$PersonEntity {
     required String? id,
     required String? firstName,
     required String? lastName,
+    required String? imageUrl,
+    required String? position,
     String? phone,
     String? email,
-    String? imageUrl,
-    String? position,
     String? employment,
     String? experience,
     String? education,
@@ -26,14 +26,20 @@ class PersonEntity with _$PersonEntity {
     required String? id,
     required String? firstName,
     required String? lastName,
+    required String? imageUrl,
+    required String? position,
     String? phone,
     String? email,
-    String? imageUrl,
     String? company,
-    String? position,
     String? city,
     List<PersonEntity>? students,
   }) = Customer;
 
-  const factory PersonEntity.empty({@Default('0') String? id}) = Empty;
+  const factory PersonEntity.empty({
+    @Default('0') String? id,
+    @Default('') String? firstName,
+    @Default('') String? lastName,
+    @Default('') String? imageUrl,
+    @Default('') String? position,
+  }) = Empty;
 }

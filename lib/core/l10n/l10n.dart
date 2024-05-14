@@ -18,8 +18,16 @@ class Messages extends Translations {
           'offers': 'Offers',
           'my_offers': 'My offers',
           'contacts': 'Contacts',
+          'my_contacts': 'My contacts',
           'profile': 'Profile',
+          'my_profile': 'My profile',
           'students': 'Students',
+          'message':
+              'Oops!\nYou have no contracts yet.\nHere will be displayed active contracts.',
+          'settings': 'Settings',
+          'resume': 'Resume',
+          'messages': 'Messages',
+          'exit': 'Exit',
         },
         'uk_UA': {
           'who_are_you': 'Хто ви?',
@@ -36,8 +44,16 @@ class Messages extends Translations {
           'offers': 'Пропозиції',
           'my_offers': 'Мої пропозиції',
           'contacts': 'Контакти',
+          'my_contacts': 'Moї контакти',
           'profile': 'Профіль',
+          'my_profile': 'Мії профіль',
           'students': 'Студенти',
+          'message':
+              'Упс!\nУ Вас ще немає контрактів.\nТут будуть відображатись діючі угоди.',
+          'settings': 'Налаштування',
+          'resume': 'Резюме',
+          'messages': 'Сповіщення',
+          'exit': 'Вийти',
         },
       };
 }

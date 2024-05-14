@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/constants/colors.dart';
@@ -7,7 +6,7 @@ import '../../../../domain/entities/offer_entity.dart';
 import '../../../../domain/entities/person_entity.dart';
 import '../../../../domain/entities/person_type_enum_entity.dart';
 import '../../../controllers/global_person_controller.dart';
-import '../../../widgets/custom_svg_scon.dart';
+import '../../../widgets/custom_svg_icon.dart';
 import '../../../widgets/gradient_border_container.dart';
 import '../../../widgets/svg_icon.dart';
 
@@ -65,7 +64,7 @@ class _OffersPageState extends State<OffersPage> {
               ),
               const SizedBox(width: 4),
               Text(
-                'contacts'.tr,
+                'my_contacts'.tr,
                 style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -85,7 +84,7 @@ class _OffersPageState extends State<OffersPage> {
               ),
               const SizedBox(width: 4),
               Text(
-                'profile'.tr,
+                'my_profile'.tr,
                 style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -97,8 +96,8 @@ class _OffersPageState extends State<OffersPage> {
       ),
       body: [
         _pageOfferOrStudents(context, c),
-        Container(),
-        Container(),
+        _contacts(context),
+        _profile(context, c),
       ][_currentPageIndex],
       bottomNavigationBar: Obx(() {
         return BottomNavigationBar(
@@ -173,9 +172,9 @@ class _OffersPageState extends State<OffersPage> {
               firstName,
               lastName,
               phone,
-              email,
-              imageUrl,
               position,
+              imageUrl,
+              email,
               employment,
               experience,
               education,
@@ -417,9 +416,131 @@ class _OffersPageState extends State<OffersPage> {
     );
   }
 
-  Widget _empty(String? id) {
+  Widget _empty(String? id, String? firstName, String? lastName,
+      String? imageUrl, String? position) {
     return const Center(
       child: Text('Empty'),
+    );
+  }
+
+  Widget _contacts(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/png/oops.png'),
+          Text(
+            'message'.tr,
+            softWrap: true,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 16,
+              fontFamily: 'Roboto',
+              color: textColorDark,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _profile(BuildContext context, GlobalPersonController c) {
+    final person = c.person;
+    return ListView(
+      padding: const EdgeInsets.only(left: 16, right: 16),
+      children: [
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: CircleAvatar(
+            radius: 30,
+            backgroundImage: AssetImage(person?.imageUrl ?? ''),
+          ),
+          title: Text(
+            person?.firstName ?? '',
+            style: const TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: textColorDark,
+            ),
+          ),
+          subtitle: Text(
+            person?.position ?? '',
+            style: const TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: textColorLight,
+            ),
+          ),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          onTap: () {},
+        ),
+        const SizedBox(height: 12.0),
+        Text(
+          'settings'.tr,
+          style: const TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        if (c.personType == PersonTypeEnumEntity.student)
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const SvgIcon(
+              assetName: 'assets/svg/resume.svg',
+              height: 24,
+              color: textColorDark,
+            ),
+            title: Text(
+              'resume'.tr,
+              style: const TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: textColorDark,
+              ),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {},
+          ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const SvgIcon(
+            assetName: 'assets/svg/notification.svg',
+            height: 24,
+            color: textColorDark,
+          ),
+          title: Text('messages'.tr,
+              style: const TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: textColorDark,
+              )),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          onTap: () {},
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          trailing: const SvgIcon(
+            assetName: 'assets/svg/exit.svg',
+            height: 24,
+            color: Colors.red,
+          ),
+          title: Text(
+            'exit'.tr,
+            style: const TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.red),
+          ),
+          onTap: () {},
+        ),
+      ],
     );
   }
 }
