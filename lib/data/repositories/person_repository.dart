@@ -11,11 +11,12 @@ class MockPersonRepository implements PersonRepository {
       lastName: 'Марцінковська',
       email: 'amartsinkovska@gmail.com',
       phone: '+380 96 587 67 61',
-      desiredSalary: '300-500\$',
+      desiredSalary: '300-500\$/місяць',
       education: 'ПЗВО “ІТ СТЕП Університет”',
       employment: 'Повна зайнятість, віддалена',
       experience: 'Немає',
       imageUrl: 'adelina.png',
+      position: 'Junior UI/UX Designer',
     );
   }
 
