@@ -20,6 +20,7 @@ class PersonEntity with _$PersonEntity {
     String? skills,
     String? desiredSalary,
     List<OfferEntity>? offers,
+    String? description,
   }) = Student;
 
   const factory PersonEntity.customer({

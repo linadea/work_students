@@ -31,7 +31,11 @@ class Messages extends Translations {
           'back': 'Back',
           'offer_details': 'Offer details',
           'agree': 'AGREE',
-          'about_the_student': 'About the student'
+          'about_the_student': 'About the student',
+          'key_skills': 'Key skills',
+          'education': 'Education',
+          'experience': 'Experience',
+          'employment': 'Employment',
         },
         'uk_UA': {
           'who_are_you': 'Хто ви?',
@@ -61,7 +65,11 @@ class Messages extends Translations {
           'back': 'Назад',
           'offer_details': 'Деталі пропозиції',
           'agree': 'ПОГОДИТИСЬ',
-          'about_the_student': 'Інформація про студента'
+          'about_the_student': 'Інформація про студента',
+          'key_skills': 'Ключові навички',
+          'education': 'Освіта',
+          'experience': 'Досвід роботи',
+          'employment': 'Тип зайнятості',
         },
       };
 }

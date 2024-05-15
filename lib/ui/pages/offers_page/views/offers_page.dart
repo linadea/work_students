@@ -155,34 +155,39 @@ class _OffersPageState extends State<OffersPage> {
 
   Widget? _pageOfferOrStudents(BuildContext context, GlobalPersonController c) {
     return c.person?.when(
-      student: (id,
-              firstName,
-              lastName,
-              phone,
-              email,
-              imageUrl,
-              position,
-              employment,
-              experience,
-              education,
-              skills,
-              desiredSalary,
-              offers) =>
+      student: (
+        id,
+        firstName,
+        lastName,
+        phone,
+        email,
+        imageUrl,
+        position,
+        employment,
+        experience,
+        education,
+        skills,
+        desiredSalary,
+        offers,
+        description,
+      ) =>
           _offers(
-              context,
-              id,
-              firstName,
-              lastName,
-              phone,
-              position,
-              imageUrl,
-              email,
-              employment,
-              experience,
-              education,
-              skills,
-              desiredSalary,
-              offers),
+        context,
+        id,
+        firstName,
+        lastName,
+        phone,
+        position,
+        imageUrl,
+        email,
+        employment,
+        experience,
+        education,
+        skills,
+        desiredSalary,
+        offers,
+        description,
+      ),
       customer: (id, firstName, lastName, phone, email, imageUrl, company,
               position, city, students) =>
           _students(context, id, firstName, lastName, phone, email, imageUrl,
@@ -191,7 +196,7 @@ class _OffersPageState extends State<OffersPage> {
     );
   }
 
-  Widget _students(
+  Widget _studentsList(
       BuildContext context,
       String? id,
       String? firstName,
@@ -211,6 +216,219 @@ class _OffersPageState extends State<OffersPage> {
           student: (student) => _student(context, student, index),
         );
       },
+    );
+  }
+
+  Widget _studentDetail(BuildContext context, OffersPageController c) {
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 22.0, top: 16.0, bottom: 16.0),
+          child: GestureDetector(
+            onTap: () {
+              c.isDetailPerson.value = false;
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.arrow_back_ios,
+                    color: textColorLight, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  'back'.tr,
+                  style: const TextStyle(
+                    color: textColorLight,
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Center(
+              child: GradientBorderContainer(
+                width: containerWidth,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 42),
+                    Text(
+                      'about_the_student'.tr,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        color: textColorLight,
+                      ),
+                    ),
+                    const SizedBox(height: 33),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 27.0, right: 27.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            c.currentPerson.value?.position ?? '',
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: textColorDark,
+                            ),
+                          ),
+                          Text(
+                              '${c.currentPerson.value?.firstName ?? ''} ${c.currentPerson.value?.lastName ?? ''}, студент(ка)',
+                              style: const TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 14,
+                                color: textColorLight,
+                                fontWeight: FontWeight.w400,
+                              )),
+                          Row(
+                            children: [
+                              Text(
+                                c.currentPerson.value?.maybeWhen(
+                                      orElse: () => '',
+                                      student: (id,
+                                              firstName,
+                                              lastName,
+                                              imageUrl,
+                                              position,
+                                              phone,
+                                              email,
+                                              employment,
+                                              experience,
+                                              education,
+                                              skills,
+                                              desiredSalary,
+                                              offers,
+                                              _) =>
+                                          employment ?? '',
+                                    ) ??
+                                    '',
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: startGradientColor,
+                                  height: 1.6,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                c.currentPerson.value?.maybeWhen(
+                                      orElse: () => '',
+                                      student: (id,
+                                              firstName,
+                                              lastName,
+                                              imageUrl,
+                                              position,
+                                              phone,
+                                              email,
+                                              employment,
+                                              experience,
+                                              education,
+                                              skills,
+                                              desiredSalary,
+                                              offers,
+                                              _) =>
+                                          desiredSalary ?? '',
+                                    ) ??
+                                    '',
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: startGradientColor,
+                                  height: 1.6,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16.0),
+                          ..._buildTextWithBullets(
+                              c.currentPerson.value?.maybeWhen(
+                                    orElse: () => '',
+                                    student: (id,
+                                            firstName,
+                                            lastName,
+                                            imageUrl,
+                                            position,
+                                            phone,
+                                            email,
+                                            employment,
+                                            experience,
+                                            education,
+                                            skills,
+                                            desiredSalary,
+                                            offers,
+                                            description) =>
+                                        description,
+                                  ) ??
+                                  ''),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    CustomButton(
+                      text: 'agree'.tr,
+                      isActive: true,
+                      width: containerWidth - 44,
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 39),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _students(
+      BuildContext context,
+      String? id,
+      String? firstName,
+      String? lastName,
+      String? phone,
+      String? email,
+      String? imageUrl,
+      String? company,
+      String? position,
+      String? city,
+      List<PersonEntity>? students) {
+    final c = Get.find<OffersPageController>();
+    return Obx(
+      () => AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        child: c.isDetailPerson.value
+            ? _studentDetail(context, c)
+            : _studentsList(
+                context,
+                id,
+                firstName,
+                lastName,
+                phone,
+                email,
+                imageUrl,
+                company,
+                position,
+                city,
+                students,
+              ),
+      ),
     );
   }
 
@@ -274,8 +492,9 @@ class _OffersPageState extends State<OffersPage> {
               padding: const EdgeInsets.all(12.0),
               child: GestureDetector(
                 onTap: () {
-                  Get.toNamed('/offer-detail',
-                      arguments: student.offers?[index]);
+                  final c = Get.find<OffersPageController>();
+                  c.currentPerson.value = student;
+                  c.isDetailPerson.value = true;
                 },
                 child: const SvgIcon(
                   assetName: 'assets/svg/arrow.svg',
@@ -304,7 +523,8 @@ class _OffersPageState extends State<OffersPage> {
       String? education,
       String? skills,
       String? desiredSalary,
-      List<OfferEntity>? offers) {
+      List<OfferEntity>? offers,
+      String? description) {
     final c = Get.find<OffersPageController>();
     return Obx(() => AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),

@@ -6,18 +6,20 @@ import '../../domain/repositories/person_repository.dart';
 class MockPersonRepository implements PersonRepository {
   PersonEntity _getStudent() {
     return const PersonEntity.student(
-      id: 's1',
-      firstName: 'Аделіна',
-      lastName: 'Марцінковська',
-      email: 'amartsinkovska@gmail.com',
-      phone: '+380 96 587 67 61',
-      desiredSalary: '300-500\$/місяць',
-      education: 'ПЗВО “ІТ СТЕП Університет”',
-      employment: 'Повна зайнятість, віддалена',
-      experience: 'Немає',
-      imageUrl: 'assets/png/adelina.png',
-      position: 'Junior UI/UX Designer',
-    );
+        id: 's1',
+        firstName: 'Аделіна',
+        lastName: 'Марцінковська',
+        email: 'amartsinkovska@gmail.com',
+        phone: '+380 96 587 67 61',
+        desiredSalary: '300-500\$/місяць',
+        education: 'ПЗВО “ІТ СТЕП Університет”',
+        employment: 'Повна зайнятість',
+        experience: 'Немає',
+        imageUrl: 'assets/png/adelina.png',
+        position: 'Junior UI/UX Designer',
+        skills: 'Figma, Adobe Photoshop, Adobe Illustrator, Adobe XD',
+        description:
+            'Ключові навички:\n• Figma\n• Adobe Photoshop\n• Adobe Illustrator\n\nОсвіта:\n• Вища, ПЗВО “ІТ СТЕП Університет”\n\nДосвід роботи:\n• Немає\n\nТип зайнятості\n• Повна зайнятість, віддалена');
   }
 
   PersonEntity _getCustomer() {
@@ -51,7 +53,8 @@ class MockPersonRepository implements PersonRepository {
             education,
             skills,
             desiredSalary,
-            _,
+            offers,
+            description,
           ) =>
               PersonEntity.student(
                 id: id,
@@ -77,6 +80,7 @@ class MockPersonRepository implements PersonRepository {
                           employment: 'Повна зайнятість',
                           customer: _getCustomer(),
                         )),
+                description: description,
               ),
           orElse: () => throw ArgumentError('Invalid entity'));
     } else {
