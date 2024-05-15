@@ -7,11 +7,11 @@ part 'offer_entity.freezed.dart';
 @freezed
 class OfferEntity with _$OfferEntity {
   const factory OfferEntity({
-    required String id,
-    required String title,
-    required PersonEntity customer,
-    required String description,
-    required String salary,
-    required String employment,
+    @Default('') String id,
+    @Default('') String title,
+    @Default(null) PersonEntity? customer,
+    @Default('') String description,
+    @Default('') String salary,
+    @Default('') String employment,
   }) = _OfferEntity;
 }

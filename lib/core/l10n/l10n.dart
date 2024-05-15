@@ -28,6 +28,10 @@ class Messages extends Translations {
           'resume': 'Resume',
           'messages': 'Messages',
           'exit': 'Exit',
+          'back': 'Back',
+          'offer_details': 'Offer details',
+          'agree': 'AGREE',
+          'about_the_student': 'About the student'
         },
         'uk_UA': {
           'who_are_you': 'Хто ви?',
@@ -54,6 +58,10 @@ class Messages extends Translations {
           'resume': 'Резюме',
           'messages': 'Сповіщення',
           'exit': 'Вийти',
+          'back': 'Назад',
+          'offer_details': 'Деталі пропозиції',
+          'agree': 'ПОГОДИТИСЬ',
+          'about_the_student': 'Інформація про студента'
         },
       };
 }

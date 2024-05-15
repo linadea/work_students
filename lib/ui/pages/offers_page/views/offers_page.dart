@@ -6,9 +6,11 @@ import '../../../../domain/entities/offer_entity.dart';
 import '../../../../domain/entities/person_entity.dart';
 import '../../../../domain/entities/person_type_enum_entity.dart';
 import '../../../controllers/global_person_controller.dart';
+import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_svg_icon.dart';
 import '../../../widgets/gradient_border_container.dart';
 import '../../../widgets/svg_icon.dart';
+import '../controllers/offers_page_controller.dart';
 
 class OffersPage extends StatefulWidget {
   const OffersPage({super.key});
@@ -181,31 +183,10 @@ class _OffersPageState extends State<OffersPage> {
               skills,
               desiredSalary,
               offers),
-      customer: (
-        id,
-        firstName,
-        lastName,
-        phone,
-        email,
-        imageUrl,
-        company,
-        position,
-        city,
-        students,
-      ) =>
-          _students(
-        context,
-        id,
-        firstName,
-        lastName,
-        phone,
-        email,
-        imageUrl,
-        company,
-        position,
-        city,
-        students,
-      ),
+      customer: (id, firstName, lastName, phone, email, imageUrl, company,
+              position, city, students) =>
+          _students(context, id, firstName, lastName, phone, email, imageUrl,
+              company, position, city, students),
       empty: _empty,
     );
   }
@@ -227,13 +208,13 @@ class _OffersPageState extends State<OffersPage> {
       itemBuilder: (context, index) {
         return students?[index].maybeMap(
           orElse: () => Container(),
-          student: (student) => _student(context, student),
+          student: (student) => _student(context, student, index),
         );
       },
     );
   }
 
-  Widget _student(BuildContext context, Student student) {
+  Widget _student(BuildContext context, Student student, int index) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
@@ -289,12 +270,18 @@ class _OffersPageState extends State<OffersPage> {
               )),
             ),
             const Spacer(),
-            const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: SvgIcon(
-                assetName: 'assets/svg/arrow.svg',
-                height: 32,
-                color: mainColor,
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed('/offer-detail',
+                      arguments: student.offers?[index]);
+                },
+                child: const SvgIcon(
+                  assetName: 'assets/svg/arrow.svg',
+                  height: 32,
+                  color: mainColor,
+                ),
               ),
             ),
           ],
@@ -318,6 +305,53 @@ class _OffersPageState extends State<OffersPage> {
       String? skills,
       String? desiredSalary,
       List<OfferEntity>? offers) {
+    final c = Get.find<OffersPageController>();
+    return Obx(() => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          child: c.isDetailOffer.value
+              ? _offerDetail(context, c)
+              : _offersList(
+                  context,
+                  id,
+                  firstName,
+                  lastName,
+                  phone,
+                  email,
+                  imageUrl,
+                  position,
+                  employment,
+                  experience,
+                  education,
+                  skills,
+                  desiredSalary,
+                  offers,
+                  c,
+                ),
+        ));
+  }
+
+  Widget _offersList(
+      BuildContext context,
+      String? id,
+      String? firstName,
+      String? lastName,
+      String? phone,
+      String? email,
+      String? imageUrl,
+      String? position,
+      String? employment,
+      String? experience,
+      String? education,
+      String? skills,
+      String? desiredSalary,
+      List<OfferEntity>? offers,
+      OffersPageController c) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return ListView.builder(
       itemCount: offers?.length ?? 0,
@@ -356,19 +390,20 @@ class _OffersPageState extends State<OffersPage> {
                         ),
                       ),
                       Text(
-                        offers![index].customer.maybeWhen(
-                            customer: (id,
-                                    firstName,
-                                    lastName,
-                                    phone,
-                                    email,
-                                    imageUrl,
-                                    company,
-                                    position,
-                                    city,
-                                    students) =>
-                                '$firstName, $company',
-                            orElse: () => ''),
+                        offers![index].customer?.maybeWhen(
+                                customer: (id,
+                                        firstName,
+                                        lastName,
+                                        phone,
+                                        email,
+                                        imageUrl,
+                                        company,
+                                        position,
+                                        city,
+                                        students) =>
+                                    '$firstName, $company',
+                                orElse: () => '') ??
+                            '',
                         style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 10,
@@ -377,19 +412,20 @@ class _OffersPageState extends State<OffersPage> {
                             height: 1.6),
                       ),
                       Text(
-                        offers[index].customer.maybeWhen(
-                            customer: (id,
-                                    firstName,
-                                    lastName,
-                                    phone,
-                                    email,
-                                    imageUrl,
-                                    company,
-                                    position,
-                                    city,
-                                    students) =>
-                                city ?? '',
-                            orElse: () => ''),
+                        offers[index].customer?.maybeWhen(
+                                customer: (id,
+                                        firstName,
+                                        lastName,
+                                        phone,
+                                        email,
+                                        imageUrl,
+                                        company,
+                                        position,
+                                        city,
+                                        students) =>
+                                    city ?? '',
+                                orElse: () => '') ??
+                            '',
                         style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 10,
@@ -400,12 +436,18 @@ class _OffersPageState extends State<OffersPage> {
                   )),
                 ),
                 const Spacer(),
-                const Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: SvgIcon(
-                    assetName: 'assets/svg/arrow.svg',
-                    height: 32,
-                    color: mainColor,
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      c.currentOffer.value = offers[index];
+                      c.isDetailOffer.value = true;
+                    },
+                    child: const SvgIcon(
+                      assetName: 'assets/svg/arrow.svg',
+                      height: 32,
+                      color: mainColor,
+                    ),
                   ),
                 ),
               ],
@@ -414,6 +456,188 @@ class _OffersPageState extends State<OffersPage> {
         );
       },
     );
+  }
+
+  Widget _offerDetail(BuildContext context, OffersPageController c) {
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 22.0, top: 16.0, bottom: 16.0),
+          child: GestureDetector(
+            onTap: () {
+              c.isDetailOffer.value = false;
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.arrow_back_ios,
+                    color: textColorLight, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  'back'.tr,
+                  style: const TextStyle(
+                    color: textColorLight,
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Center(
+              child: GradientBorderContainer(
+                width: containerWidth,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 42),
+                    Text(
+                      'offer_details'.tr,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        color: textColorLight,
+                      ),
+                    ),
+                    const SizedBox(height: 33),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 27.0, right: 27.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            c.currentOffer.value?.title ?? '',
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: textColorDark,
+                            ),
+                          ),
+                          Text(
+                            c.currentOffer.value?.customer?.maybeWhen(
+                                    customer: (id,
+                                            firstName,
+                                            lastName,
+                                            phone,
+                                            email,
+                                            imageUrl,
+                                            company,
+                                            position,
+                                            city,
+                                            students) =>
+                                        '$firstName, $company',
+                                    orElse: () => '') ??
+                                '',
+                            style: const TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 14,
+                              color: textColorLight,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          const SizedBox(height: 6.0),
+                          Row(
+                            children: [
+                              Text(
+                                c.currentOffer.value?.employment ?? '',
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  color: endGradientColor,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                c.currentOffer.value?.salary ?? '',
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  color: endGradientColor,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16.0),
+                          ..._buildTextWithBullets(
+                              c.currentOffer.value?.description ?? ''),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    CustomButton(
+                      text: 'agree'.tr,
+                      isActive: true,
+                      width: containerWidth - 44,
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 39),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildTextWithBullets(String text) {
+    List<Widget> list = [];
+    text.split('\n').forEach((line) {
+      if (line.startsWith('•')) {
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('• ',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Roboto',
+                        color: textColorLight,
+                        fontWeight: FontWeight.w400)),
+                Expanded(
+                  child: Text(
+                    line.substring(1).trim(),
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Roboto',
+                        color: textColorLight),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      } else if (line.isNotEmpty) {
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
+              line,
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Roboto',
+                  color: textColorDark),
+            ),
+          ),
+        );
+      } else {
+        list.add(const SizedBox(height: 8.0));
+      }
+    });
+    return list;
   }
 
   Widget _empty(String? id, String? firstName, String? lastName,
