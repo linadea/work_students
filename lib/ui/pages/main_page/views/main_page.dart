@@ -139,6 +139,26 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
+              notifications: () => Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 3.0),
+                    child: SvgIcon(
+                      assetName: 'assets/svg/notification.svg',
+                      height: 22,
+                      color: mainColor,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'notifications'.tr,
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: textColorDark),
+                  ),
+                ],
+              ),
             ),
           )
         ][_currentPageIndex],
@@ -948,10 +968,10 @@ class _MainPageState extends State<MainPage> {
           );
         },
         child: mainController.profileScreenState.value.when(
-          main: () => _profileMainState(controller),
-          settings: () => _profileSettingState(controller),
-          resume: () => _profileResumeState(controller),
-        ),
+            main: () => _profileMainState(controller),
+            settings: () => _profileSettingState(controller),
+            resume: () => _profileResumeState(controller),
+            notifications: () => _profileNotificationsState(controller)),
       ),
     );
   }
@@ -1234,6 +1254,12 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _profileResumeState(GlobalPersonController c) {
+    return const Center(
+      child: Text('Setting State'),
+    );
+  }
+
+  Widget _profileNotificationsState(GlobalPersonController c) {
     return const Center(
       child: Text('Setting State'),
     );
