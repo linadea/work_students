@@ -7,6 +7,7 @@ class GradientBorderContainer extends StatelessWidget {
   final double? width;
   final double? height;
   final double borderWidth;
+  final double borderRadius;
 
   const GradientBorderContainer({
     super.key,
@@ -14,6 +15,7 @@ class GradientBorderContainer extends StatelessWidget {
     this.width,
     this.height,
     this.borderWidth = 3.0,
+    this.borderRadius = 36.0,
   });
 
   @override
@@ -32,7 +34,7 @@ class GradientBorderContainer extends StatelessWidget {
             ],
             stops: const [0.0, 1.0],
           ),
-          borderRadius: BorderRadius.circular(36.0 + borderWidth - 3),
+          borderRadius: BorderRadius.circular(borderRadius + borderWidth - 3),
           boxShadow: const [
             BoxShadow(
               color: shadowColor,
@@ -45,7 +47,7 @@ class GradientBorderContainer extends StatelessWidget {
           margin: EdgeInsets.all(borderWidth.toDouble()),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(33.0),
+            borderRadius: BorderRadius.circular(borderRadius - 3),
           ),
           child: child,
         ),
