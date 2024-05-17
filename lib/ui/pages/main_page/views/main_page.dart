@@ -219,7 +219,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _studentDetail(BuildContext context, OffersPageController c) {
+  Widget _studentDetail(BuildContext context, MainPageController c) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return Column(
       children: [
@@ -403,7 +403,7 @@ class _MainPageState extends State<MainPage> {
       String? position,
       String? city,
       List<PersonEntity>? students) {
-    final c = Get.find<OffersPageController>();
+    final c = Get.find<MainPageController>();
     return Obx(
       () => AnimatedSwitcher(
         duration: const Duration(milliseconds: 400),
@@ -492,7 +492,7 @@ class _MainPageState extends State<MainPage> {
               padding: const EdgeInsets.all(12.0),
               child: GestureDetector(
                 onTap: () {
-                  final c = Get.find<OffersPageController>();
+                  final c = Get.find<MainPageController>();
                   c.currentPerson.value = student;
                   c.isDetailPerson.value = true;
                 },
@@ -525,7 +525,7 @@ class _MainPageState extends State<MainPage> {
       String? desiredSalary,
       List<OfferEntity>? offers,
       String? description) {
-    final c = Get.find<OffersPageController>();
+    final c = Get.find<MainPageController>();
     return Obx(() => AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
           transitionBuilder: (Widget child, Animation<double> animation) {
@@ -571,7 +571,7 @@ class _MainPageState extends State<MainPage> {
       String? skills,
       String? desiredSalary,
       List<OfferEntity>? offers,
-      OffersPageController c) {
+      MainPageController c) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return ListView.builder(
       itemCount: offers?.length ?? 0,
@@ -678,7 +678,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _offerDetail(BuildContext context, OffersPageController c) {
+  Widget _offerDetail(BuildContext context, MainPageController c) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return Column(
       children: [
@@ -889,7 +889,27 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _profile(BuildContext context, GlobalPersonController c) {
+  Widget _profile(BuildContext context, GlobalPersonController controller) {
+    final mainController = Get.find<MainPageController>();
+    return Obx(
+      () => AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        child: mainController.profileScreenState.value.when(
+          main: () => _profileMainState(controller),
+          settings: () => _profileSettingState(controller),
+          resume: () => _profileResumeState(controller),
+        ),
+      ),
+    );
+  }
+
+  Widget _profileMainState(GlobalPersonController c) {
     final person = c.person;
     return ListView(
       padding: const EdgeInsets.only(left: 16, right: 16),
@@ -985,6 +1005,18 @@ class _MainPageState extends State<MainPage> {
           onTap: () {},
         ),
       ],
+    );
+  }
+
+  Widget _profileSettingState(GlobalPersonController c) {
+    return const Center(
+      child: Text('Setting State'),
+    );
+  }
+
+  Widget _profileResumeState(GlobalPersonController c) {
+    return const Center(
+      child: Text('Setting State'),
     );
   }
 }
