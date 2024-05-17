@@ -1,27 +1,10 @@
 import 'package:get/get.dart';
+import 'package:work_students/domain/entities/offer_entity.dart';
+import 'package:work_students/domain/entities/person_entity.dart';
 
-import '../../../../domain/entities/person_type_enum_entity.dart';
-import '../../../controllers/global_person_controller.dart';
-
-class MainPageController extends GetxController {
-  var isStudent = false.obs;
-  var isEmployer = false.obs;
-
-  final personController = Get.find<GlobalPersonController>();
-
-  void setStudent(bool value) {
-    isStudent.value = value;
-    if (value) {
-      isEmployer.value = !value;
-      personController.setPersonType(PersonTypeEnumEntity.student);
-    }
-  }
-
-  void setEmployer(bool value) {
-    isEmployer.value = value;
-    if (value) {
-      isStudent.value = !value;
-      personController.setPersonType(PersonTypeEnumEntity.customer);
-    }
-  }
+class OffersPageController extends GetxController {
+  Rx<OfferEntity?> currentOffer = Rx<OfferEntity?>(null);
+  var isDetailOffer = false.obs;
+  Rx<PersonEntity?> currentPerson = Rx<PersonEntity?>(null);
+  var isDetailPerson = false.obs;
 }

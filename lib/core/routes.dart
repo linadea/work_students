@@ -4,23 +4,23 @@ import 'package:get/get.dart';
 import 'package:work_students/ui/pages/auth_page/bindings/auth_page_bindings.dart';
 import 'package:work_students/ui/pages/auth_page/views/auth_page.dart';
 
+import '../ui/pages/start_page/bindings/start_page_bindings.dart';
+import '../ui/pages/start_page/views/start_page.dart';
 import '../ui/pages/main_page/bindings/main_page_bindings.dart';
 import '../ui/pages/main_page/views/main_page.dart';
-import '../ui/pages/offers_page/bindings/offers_page_bindings.dart';
-import '../ui/pages/offers_page/views/offers_page.dart';
 
 class Routes {
-  static const HOME = '/home';
+  static const START = '/home';
   static const AUTH = '/auth';
-  static const OFFERS = '/offers';
+  static const MAIN = '/main';
 }
 
 class AppPages {
   static final routes = [
     GetPage(
-      name: Routes.HOME,
-      page: () => const MainPage(),
-      binding: MainPageBindings(),
+      name: Routes.START,
+      page: () => const StartPage(),
+      binding: StartPageBindings(),
     ),
     GetPage(
       name: Routes.AUTH,
@@ -28,8 +28,8 @@ class AppPages {
       binding: AuthPageBindings(),
     ),
     GetPage(
-      name: Routes.OFFERS,
-      page: () => const OffersPage(),
+      name: Routes.MAIN,
+      page: () => const MainPage(),
       binding: OffersPageBindings(),
     ),
   ];

@@ -24,7 +24,7 @@ class MainApp extends StatelessWidget {
       fallbackLocale: const Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
       getPages: AppPages.routes,
-      initialRoute: Routes.HOME,
+      initialRoute: Routes.START,
     );
   }
 }

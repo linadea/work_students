@@ -76,7 +76,7 @@ class AuthPage extends StatelessWidget {
                               width: containerWidth,
                               onTap: () => Get.find<AuthPageController>()
                                   .signIn()
-                                  .then((_) => Get.offAllNamed('/offers',
+                                  .then((_) => Get.offAllNamed('/main',
                                       arguments: Transition.zoom)),
                             ),
                             const SizedBox(height: 18),
