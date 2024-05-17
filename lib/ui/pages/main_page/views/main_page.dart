@@ -939,6 +939,7 @@ class _MainPageState extends State<MainPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Spacer(),
           Image.asset('assets/png/oops.png'),
           Text(
             'message'.tr,
@@ -951,6 +952,7 @@ class _MainPageState extends State<MainPage> {
               fontWeight: FontWeight.w500,
             ),
           ),
+          const Spacer(),
         ],
       ),
     );
@@ -1056,7 +1058,10 @@ class _MainPageState extends State<MainPage> {
                 color: textColorDark,
               )),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-          onTap: () {},
+          onTap: () {
+            mainController.profileScreenState.value =
+                const ProfileScreenState.notifications();
+          },
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -1260,8 +1265,60 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _profileNotificationsState(GlobalPersonController c) {
-    return const Center(
-      child: Text('Setting State'),
+    final mainController = Get.find<MainPageController>();
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 22.0, top: 16.0, bottom: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                mainController.profileScreenState.value =
+                    const ProfileScreenState.main();
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.arrow_back_ios,
+                      color: textColorLight, size: 16),
+                  const SizedBox(width: 6),
+                  Text(
+                    'back'.tr,
+                    style: const TextStyle(
+                      color: textColorLight,
+                      fontSize: 16,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const Spacer(),
+          Image.asset('assets/png/oops.png'),
+          Text(
+            'message2'.tr,
+            softWrap: true,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 16,
+              fontFamily: 'Roboto',
+              color: textColorDark,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 22),
+          CustomButton(
+            text: 'allow_notifications'.tr,
+            isActive: true,
+            width: containerWidth,
+            onTap: () {},
+          ),
+          const Spacer(),
+        ],
+      ),
     );
   }
 }
