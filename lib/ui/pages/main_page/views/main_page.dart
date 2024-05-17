@@ -9,8 +9,10 @@ import '../../../controllers/global_person_controller.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_svg_icon.dart';
 import '../../../widgets/gradient_border_container.dart';
+import '../../../widgets/labeled_input_field.dart';
 import '../../../widgets/svg_icon.dart';
 import '../controllers/main_page_controller.dart';
+import '../controllers/models/profile_screen_state.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -25,6 +27,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<GlobalPersonController>();
+    final mainController = Get.find<MainPageController>();
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -74,25 +77,69 @@ class _MainPageState extends State<MainPage> {
               ),
             ],
           ),
-          Row(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 3.0),
-                child: SvgIcon(
-                  assetName: 'assets/svg/user.svg',
-                  height: 22,
-                  color: mainColor,
-                ),
+          Obx(
+            () => mainController.profileScreenState.value.when(
+              main: () => Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 3.0),
+                    child: SvgIcon(
+                      assetName: 'assets/svg/user.svg',
+                      height: 22,
+                      color: mainColor,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'my_profile'.tr,
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: textColorDark),
+                  ),
+                ],
               ),
-              const SizedBox(width: 4),
-              Text(
-                'my_profile'.tr,
-                style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: textColorDark),
+              settings: () => Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 3.0),
+                    child: SvgIcon(
+                      assetName: 'assets/svg/settings.svg',
+                      height: 22,
+                      color: mainColor,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'profile_settings'.tr,
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: textColorDark),
+                  ),
+                ],
               ),
-            ],
+              resume: () => Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 3.0),
+                    child: SvgIcon(
+                      assetName: 'assets/svg/resume.svg',
+                      height: 22,
+                      color: mainColor,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'resume'.tr,
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: textColorDark),
+                  ),
+                ],
+              ),
+            ),
           )
         ][_currentPageIndex],
       ),
@@ -219,7 +266,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _studentDetail(BuildContext context, OffersPageController c) {
+  Widget _studentDetail(BuildContext context, MainPageController c) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return Column(
       children: [
@@ -403,7 +450,7 @@ class _MainPageState extends State<MainPage> {
       String? position,
       String? city,
       List<PersonEntity>? students) {
-    final c = Get.find<OffersPageController>();
+    final c = Get.find<MainPageController>();
     return Obx(
       () => AnimatedSwitcher(
         duration: const Duration(milliseconds: 400),
@@ -492,7 +539,7 @@ class _MainPageState extends State<MainPage> {
               padding: const EdgeInsets.all(12.0),
               child: GestureDetector(
                 onTap: () {
-                  final c = Get.find<OffersPageController>();
+                  final c = Get.find<MainPageController>();
                   c.currentPerson.value = student;
                   c.isDetailPerson.value = true;
                 },
@@ -525,7 +572,7 @@ class _MainPageState extends State<MainPage> {
       String? desiredSalary,
       List<OfferEntity>? offers,
       String? description) {
-    final c = Get.find<OffersPageController>();
+    final c = Get.find<MainPageController>();
     return Obx(() => AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
           transitionBuilder: (Widget child, Animation<double> animation) {
@@ -571,7 +618,7 @@ class _MainPageState extends State<MainPage> {
       String? skills,
       String? desiredSalary,
       List<OfferEntity>? offers,
-      OffersPageController c) {
+      MainPageController c) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return ListView.builder(
       itemCount: offers?.length ?? 0,
@@ -678,7 +725,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _offerDetail(BuildContext context, OffersPageController c) {
+  Widget _offerDetail(BuildContext context, MainPageController c) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return Column(
       children: [
@@ -861,7 +908,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _empty(String? id, String? firstName, String? lastName,
-      String? imageUrl, String? position) {
+      String? imageUrl, String? position, String? phone, String? email) {
     return const Center(
       child: Text('Empty'),
     );
@@ -889,15 +936,36 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _profile(BuildContext context, GlobalPersonController c) {
+  Widget _profile(BuildContext context, GlobalPersonController controller) {
+    final mainController = Get.find<MainPageController>();
+    return Obx(
+      () => AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        child: mainController.profileScreenState.value.when(
+          main: () => _profileMainState(controller),
+          settings: () => _profileSettingState(controller),
+          resume: () => _profileResumeState(controller),
+        ),
+      ),
+    );
+  }
+
+  Widget _profileMainState(GlobalPersonController c) {
     final person = c.person;
+    final mainController = Get.find<MainPageController>();
     return ListView(
       padding: const EdgeInsets.only(left: 16, right: 16),
       children: [
         ListTile(
           contentPadding: EdgeInsets.zero,
           leading: CircleAvatar(
-            radius: 30,
+            radius: 32,
             backgroundImage: AssetImage(person?.imageUrl ?? ''),
           ),
           title: Text(
@@ -919,7 +987,10 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-          onTap: () {},
+          onTap: () {
+            mainController.profileScreenState.value =
+                const ProfileScreenState.settings();
+          },
         ),
         const SizedBox(height: 12.0),
         Text(
@@ -985,6 +1056,186 @@ class _MainPageState extends State<MainPage> {
           onTap: () {},
         ),
       ],
+    );
+  }
+
+  Widget _profileSettingState(GlobalPersonController globalController) {
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    final mainController = Get.find<MainPageController>();
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 22.0, top: 16.0, bottom: 16.0),
+          child: GestureDetector(
+            onTap: () {
+              mainController.profileScreenState.value =
+                  const ProfileScreenState.main();
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.arrow_back_ios,
+                    color: textColorLight, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  'back'.tr,
+                  style: const TextStyle(
+                    color: textColorLight,
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                GradientBorderContainer(
+                  width: containerWidth,
+                  child: Padding(
+                    padding: const EdgeInsets.all(27),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'personal_information'.tr,
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w700,
+                            color: textColorDark,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        LabeledInputField(
+                          label: 'first_name'.tr,
+                          controller: TextEditingController(
+                              text: globalController.person?.firstName),
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 16),
+                        LabeledInputField(
+                          label: 'last_name'.tr,
+                          controller: TextEditingController(
+                              text: globalController.person?.lastName),
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 16),
+                        LabeledInputField(
+                          label: 'phone_number'.tr,
+                          controller: TextEditingController(
+                              text: globalController.person?.phone),
+                          keyboardType: TextInputType.phone,
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 16),
+                        LabeledInputField(
+                          label: 'email'.tr,
+                          controller: TextEditingController(
+                              text: globalController.person?.email),
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                ..._customerSpecificWidgets(globalController),
+                const SizedBox(height: 22),
+                CustomButton(
+                  text: 'save_changes'.tr,
+                  isActive: true,
+                  width: containerWidth,
+                  onTap: () {},
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 22.0, top: 16.0, bottom: 16.0),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Row(
+                      children: [
+                        const SvgIcon(
+                          assetName: 'assets/svg/bin.svg',
+                          height: 24,
+                          color: Colors.red,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'delete_profile'.tr,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _customerSpecificWidgets(
+      GlobalPersonController globalController) {
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    return globalController.person?.maybeWhen(
+          orElse: () => [],
+          customer: (id, firstName, lastName, imageUrl, position, phone, email,
+                  company, city, students) =>
+              [
+            const SizedBox(
+              height: 22,
+            ),
+            GradientBorderContainer(
+              width: containerWidth,
+              child: Padding(
+                padding: const EdgeInsets.all(27),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabeledInputField(
+                      label: 'company'.tr,
+                      controller: TextEditingController(text: company ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'position'.tr,
+                      controller: TextEditingController(text: position ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'city'.tr,
+                      controller: TextEditingController(text: city ?? ''),
+                      keyboardType: TextInputType.phone,
+                      textInputAction: TextInputAction.next,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ) ??
+        [];
+  }
+
+  Widget _profileResumeState(GlobalPersonController c) {
+    return const Center(
+      child: Text('Setting State'),
     );
   }
 }
