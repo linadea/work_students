@@ -1041,7 +1041,10 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {},
+            onTap: () {
+              mainController.profileScreenState.value =
+                  const ProfileScreenState.resume();
+            },
           ),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -1258,10 +1261,180 @@ class _MainPageState extends State<MainPage> {
         [];
   }
 
-  Widget _profileResumeState(GlobalPersonController c) {
-    return const Center(
-      child: Text('Setting State'),
+  Widget _profileResumeState(GlobalPersonController globalController) {
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    final mainController = Get.find<MainPageController>();
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 22.0, top: 16.0, bottom: 8.0),
+          child: GestureDetector(
+            onTap: () {
+              mainController.profileScreenState.value =
+                  const ProfileScreenState.main();
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.arrow_back_ios,
+                    color: textColorLight, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  'back'.tr,
+                  style: const TextStyle(
+                    color: textColorLight,
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 22),
+                GradientBorderContainer(
+                  width: containerWidth,
+                  child: Padding(
+                    padding: const EdgeInsets.all(27),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LabeledInputField(
+                          label: 'first_and_last_name'.tr,
+                          controller: TextEditingController(
+                              text:
+                                  '${globalController.person?.firstName} ${globalController.person?.lastName}'),
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 16),
+                        LabeledInputField(
+                          label: 'phone_number'.tr,
+                          controller: TextEditingController(
+                              text: globalController.person?.phone),
+                          keyboardType: TextInputType.phone,
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 16),
+                        LabeledInputField(
+                          label: 'email'.tr,
+                          controller: TextEditingController(
+                              text: globalController.person?.email),
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 22),
+                ..._studentSpecificWidgetsForResume(globalController),
+                const SizedBox(height: 22),
+                CustomButton(
+                  text: 'save_changes'.tr,
+                  isActive: true,
+                  width: containerWidth,
+                  onTap: () {},
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  List<Widget> _studentSpecificWidgetsForResume(
+      GlobalPersonController globalController) {
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    return globalController.person?.maybeWhen(
+          orElse: () => [],
+          student: (
+            id,
+            firstName,
+            lastName,
+            imageUrl,
+            position,
+            phone,
+            email,
+            employment,
+            experience,
+            education,
+            skills,
+            desiredSalary,
+            offers,
+            description,
+          ) =>
+              [
+            GradientBorderContainer(
+              width: containerWidth,
+              child: Padding(
+                padding: const EdgeInsets.all(27),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabeledInputField(
+                      label: 'position'.tr,
+                      controller: TextEditingController(text: position ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'type_of_employment'.tr,
+                      controller: TextEditingController(text: employment ?? ''),
+                      keyboardType: TextInputType.phone,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 22),
+            GradientBorderContainer(
+              width: containerWidth,
+              child: Padding(
+                padding: const EdgeInsets.all(27),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabeledInputField(
+                      label: 'work_experience'.tr,
+                      controller: TextEditingController(text: experience ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'education'.tr,
+                      controller: TextEditingController(text: education ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'key_skills'.tr,
+                      controller: TextEditingController(text: skills ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'desired_salary'.tr,
+                      controller:
+                          TextEditingController(text: desiredSalary ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ) ??
+        [];
   }
 
   Widget _profileNotificationsState(GlobalPersonController c) {
