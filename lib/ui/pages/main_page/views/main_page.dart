@@ -69,7 +69,7 @@ class _MainPageState extends State<MainPage> {
               ),
               const SizedBox(width: 4),
               Text(
-                'my_contacts'.tr,
+                'my_contracts'.tr,
                 style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -165,7 +165,7 @@ class _MainPageState extends State<MainPage> {
       ),
       body: [
         _pageOfferOrStudents(context, c),
-        _contacts(context),
+        _contracts(context),
         _profile(context, c),
       ][_currentPageIndex],
       bottomNavigationBar: Obx(() {
@@ -202,7 +202,7 @@ class _MainPageState extends State<MainPage> {
                 selectedColor: mainColor,
                 unselectedColor: textColorLight,
               ),
-              label: 'contacts'.tr,
+              label: 'contracts'.tr,
             ),
             BottomNavigationBarItem(
               icon: CustomSvgIcon(
@@ -934,7 +934,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _contacts(BuildContext context) {
+  Widget _contracts(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
