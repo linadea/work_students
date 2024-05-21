@@ -1,7 +1,11 @@
+import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/constants/assets.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/routes.dart';
 import '../../../../domain/entities/offer_entity.dart';
 import '../../../../domain/entities/person_entity.dart';
 import '../../../../domain/entities/person_type_enum_entity.dart';
@@ -28,10 +32,15 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final c = Get.find<GlobalPersonController>();
     final mainController = Get.find<MainPageController>();
+    final double appBarHeight =
+        kToolbarHeight + MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: backgroundColor,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: backgroundColor,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: [
           Row(
             children: [
@@ -39,8 +48,8 @@ class _MainPageState extends State<MainPage> {
                 padding: const EdgeInsets.only(left: 3.0),
                 child: SvgIcon(
                   assetName: c.personType == PersonTypeEnumEntity.student
-                      ? 'assets/svg/edit.svg'
-                      : 'assets/svg/student.svg',
+                      ? Assets.resourceSvgEdit
+                      : Assets.resourceSvgStudent,
                   height: 22,
                   color: mainColor,
                 ),
@@ -62,14 +71,14 @@ class _MainPageState extends State<MainPage> {
               const Padding(
                 padding: EdgeInsets.only(left: 3.0),
                 child: SvgIcon(
-                  assetName: 'assets/svg/contract.svg',
+                  assetName: Assets.resourceSvgContract,
                   height: 22,
                   color: mainColor,
                 ),
               ),
               const SizedBox(width: 4),
               Text(
-                'my_contacts'.tr,
+                'my_contracts'.tr,
                 style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -84,7 +93,7 @@ class _MainPageState extends State<MainPage> {
                   const Padding(
                     padding: EdgeInsets.only(left: 3.0),
                     child: SvgIcon(
-                      assetName: 'assets/svg/user.svg',
+                      assetName: Assets.resourceSvgUser,
                       height: 22,
                       color: mainColor,
                     ),
@@ -104,7 +113,7 @@ class _MainPageState extends State<MainPage> {
                   const Padding(
                     padding: EdgeInsets.only(left: 3.0),
                     child: SvgIcon(
-                      assetName: 'assets/svg/settings.svg',
+                      assetName: Assets.resourceSvgSettings,
                       height: 22,
                       color: mainColor,
                     ),
@@ -124,7 +133,7 @@ class _MainPageState extends State<MainPage> {
                   const Padding(
                     padding: EdgeInsets.only(left: 3.0),
                     child: SvgIcon(
-                      assetName: 'assets/svg/resume.svg',
+                      assetName: Assets.resourceSvgResume,
                       height: 22,
                       color: mainColor,
                     ),
@@ -139,62 +148,97 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
+              notifications: () => Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 3.0),
+                    child: SvgIcon(
+                      assetName: Assets.resourceSvgNotification,
+                      height: 22,
+                      color: mainColor,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'notifications'.tr,
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: textColorDark),
+                  ),
+                ],
+              ),
             ),
           )
         ][_currentPageIndex],
       ),
-      body: [
-        _pageOfferOrStudents(context, c),
-        _contacts(context),
-        _profile(context, c),
-      ][_currentPageIndex],
+      body: Stack(
+        children: [
+          SvgPicture.asset(Assets.resourceSvgBackground, fit: BoxFit.cover),
+          Padding(
+            padding: EdgeInsets.only(top: appBarHeight),
+            child: IndexedStack(
+              index: _currentPageIndex,
+              children: [
+                _pageOfferOrStudents(context, c) ?? Container(),
+                _contracts(context),
+                _profile(context, c),
+              ],
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: Obx(() {
-        return BottomNavigationBar(
+        return CustomNavigationBar(
+          iconSize: 28.0,
+          selectedColor: mainColor,
+          strokeColor: const Color(0x30040307),
+          unSelectedColor: textColorLight,
+          backgroundColor: colorWhiteTransparent,
+          items: [
+            CustomNavigationBarItem(
+              icon: CustomSvgIcon(
+                assetName: c.personType == PersonTypeEnumEntity.student
+                    ? Assets.resourceSvgEdit
+                    : Assets.resourceSvgStudent,
+                height: 28,
+                isSelected: _currentPageIndex == 0,
+                selectedColor: mainColor,
+                unselectedColor: textColorLight,
+              ),
+              title: Text(
+                c.personType == PersonTypeEnumEntity.student
+                    ? 'offers'.tr
+                    : 'students'.tr,
+              ),
+            ),
+            CustomNavigationBarItem(
+              icon: CustomSvgIcon(
+                assetName: Assets.resourceSvgContract,
+                height: 28,
+                isSelected: _currentPageIndex == 1,
+                selectedColor: mainColor,
+                unselectedColor: textColorLight,
+              ),
+              title: Text('contracts'.tr),
+            ),
+            CustomNavigationBarItem(
+              icon: CustomSvgIcon(
+                assetName: Assets.resourceSvgUser,
+                height: 28,
+                isSelected: _currentPageIndex == 2,
+                selectedColor: mainColor,
+                unselectedColor: textColorLight,
+              ),
+              title: Text('profile'.tr),
+            ),
+          ],
           currentIndex: _currentPageIndex,
           onTap: (index) {
             setState(() {
               _currentPageIndex = index;
             });
           },
-          iconSize: 28,
-          selectedItemColor: mainColor,
-          unselectedItemColor: textColorLight,
-          items: [
-            BottomNavigationBarItem(
-              icon: CustomSvgIcon(
-                assetName: c.personType == PersonTypeEnumEntity.student
-                    ? 'assets/svg/edit.svg'
-                    : 'assets/svg/student.svg',
-                height: 28,
-                isSelected: _currentPageIndex == 0,
-                selectedColor: mainColor,
-                unselectedColor: textColorLight,
-              ),
-              label: c.personType == PersonTypeEnumEntity.student
-                  ? 'offers'.tr
-                  : 'students'.tr,
-            ),
-            BottomNavigationBarItem(
-              icon: CustomSvgIcon(
-                assetName: 'assets/svg/contract.svg',
-                height: 28,
-                isSelected: _currentPageIndex == 1,
-                selectedColor: mainColor,
-                unselectedColor: textColorLight,
-              ),
-              label: 'contacts'.tr,
-            ),
-            BottomNavigationBarItem(
-              icon: CustomSvgIcon(
-                assetName: 'assets/svg/user.svg',
-                height: 28,
-                isSelected: _currentPageIndex == 2,
-                selectedColor: mainColor,
-                unselectedColor: textColorLight,
-              ),
-              label: 'profile'.tr,
-            ),
-          ],
         );
       }),
     );
@@ -256,6 +300,7 @@ class _MainPageState extends State<MainPage> {
       String? city,
       List<PersonEntity>? students) {
     return ListView.builder(
+      padding: EdgeInsets.zero,
       itemCount: students?.length ?? 0,
       itemBuilder: (context, index) {
         return students?[index].maybeMap(
@@ -271,7 +316,7 @@ class _MainPageState extends State<MainPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 22.0, top: 16.0, bottom: 16.0),
+          padding: const EdgeInsets.only(left: 22.0, top: 4.0, bottom: 16.0),
           child: GestureDetector(
             onTap: () {
               c.isDetailPerson.value = false;
@@ -279,12 +324,12 @@ class _MainPageState extends State<MainPage> {
             child: Row(
               children: [
                 const Icon(Icons.arrow_back_ios,
-                    color: textColorLight, size: 16),
+                    color: colorWhiteTransparent, size: 16),
                 const SizedBox(width: 6),
                 Text(
                   'back'.tr,
                   style: const TextStyle(
-                    color: textColorLight,
+                    color: colorWhiteTransparent,
                     fontSize: 16,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w400,
@@ -544,7 +589,7 @@ class _MainPageState extends State<MainPage> {
                   c.isDetailPerson.value = true;
                 },
                 child: const SvgIcon(
-                  assetName: 'assets/svg/arrow.svg',
+                  assetName: Assets.resourceSvgArrow,
                   height: 32,
                   color: mainColor,
                 ),
@@ -621,6 +666,7 @@ class _MainPageState extends State<MainPage> {
       MainPageController c) {
     final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
     return ListView.builder(
+      padding: EdgeInsets.zero,
       itemCount: offers?.length ?? 0,
       itemBuilder: (context, index) {
         return Padding(
@@ -634,73 +680,74 @@ class _MainPageState extends State<MainPage> {
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 12.0, top: 12.0, bottom: 12.0),
-                  child: Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        offers?[index].title ?? '',
-                        style: const TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: textColorDark,
-                            height: 1.6),
-                      ),
-                      Text(
-                        offers?[index].salary ?? '',
-                        style: const TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 10,
-                          color: startGradientColor,
-                          height: 1.6,
+                  child: Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          offers?[index].title ?? '',
+                          style: const TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: textColorDark,
+                              height: 1.6),
                         ),
-                      ),
-                      Text(
-                        offers![index].customer?.maybeWhen(
-                                customer: (id,
-                                        firstName,
-                                        lastName,
-                                        phone,
-                                        email,
-                                        imageUrl,
-                                        company,
-                                        position,
-                                        city,
-                                        students) =>
-                                    '$firstName, $company',
-                                orElse: () => '') ??
-                            '',
-                        style: const TextStyle(
+                        Text(
+                          offers?[index].salary ?? '',
+                          style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 10,
-                            color: textColorDark,
-                            fontWeight: FontWeight.w400,
-                            height: 1.6),
-                      ),
-                      Text(
-                        offers[index].customer?.maybeWhen(
-                                customer: (id,
-                                        firstName,
-                                        lastName,
-                                        phone,
-                                        email,
-                                        imageUrl,
-                                        company,
-                                        position,
-                                        city,
-                                        students) =>
-                                    city ?? '',
-                                orElse: () => '') ??
-                            '',
-                        style: const TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300,
-                            height: 1.6),
-                      )
-                    ],
-                  )),
+                            color: startGradientColor,
+                            height: 1.6,
+                          ),
+                        ),
+                        Text(
+                          offers![index].customer?.maybeWhen(
+                                  customer: (id,
+                                          firstName,
+                                          lastName,
+                                          phone,
+                                          email,
+                                          imageUrl,
+                                          company,
+                                          position,
+                                          city,
+                                          students) =>
+                                      '$firstName, $company',
+                                  orElse: () => '') ??
+                              '',
+                          style: const TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 10,
+                              color: textColorDark,
+                              fontWeight: FontWeight.w400,
+                              height: 1.6),
+                        ),
+                        Text(
+                          offers[index].customer?.maybeWhen(
+                                  customer: (id,
+                                          firstName,
+                                          lastName,
+                                          phone,
+                                          email,
+                                          imageUrl,
+                                          company,
+                                          position,
+                                          city,
+                                          students) =>
+                                      city ?? '',
+                                  orElse: () => '') ??
+                              '',
+                          style: const TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 10,
+                              fontWeight: FontWeight.w300,
+                              height: 1.6),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const Spacer(),
                 Padding(
@@ -711,7 +758,7 @@ class _MainPageState extends State<MainPage> {
                       c.isDetailOffer.value = true;
                     },
                     child: const SvgIcon(
-                      assetName: 'assets/svg/arrow.svg',
+                      assetName: Assets.resourceSvgArrow,
                       height: 32,
                       color: mainColor,
                     ),
@@ -730,7 +777,7 @@ class _MainPageState extends State<MainPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 22.0, top: 16.0, bottom: 16.0),
+          padding: const EdgeInsets.only(left: 22.0, top: 4.0, bottom: 16.0),
           child: GestureDetector(
             onTap: () {
               c.isDetailOffer.value = false;
@@ -738,12 +785,12 @@ class _MainPageState extends State<MainPage> {
             child: Row(
               children: [
                 const Icon(Icons.arrow_back_ios,
-                    color: textColorLight, size: 16),
+                    color: colorWhiteTransparent, size: 16),
                 const SizedBox(width: 6),
                 Text(
                   'back'.tr,
                   style: const TextStyle(
-                    color: textColorLight,
+                    color: colorWhiteTransparent,
                     fontSize: 16,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w400,
@@ -755,99 +802,97 @@ class _MainPageState extends State<MainPage> {
         ),
         Expanded(
           child: SingleChildScrollView(
-            child: Center(
-              child: GradientBorderContainer(
-                width: containerWidth,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 42),
-                    Text(
-                      'offer_details'.tr,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        color: textColorLight,
-                      ),
+            child: GradientBorderContainer(
+              width: containerWidth,
+              child: Column(
+                children: [
+                  const SizedBox(height: 42),
+                  Text(
+                    'offer_details'.tr,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: textColorLight,
                     ),
-                    const SizedBox(height: 33),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 27.0, right: 27.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            c.currentOffer.value?.title ?? '',
-                            textAlign: TextAlign.start,
-                            style: const TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: textColorDark,
-                            ),
+                  ),
+                  const SizedBox(height: 33),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 27.0, right: 27.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          c.currentOffer.value?.title ?? '',
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: textColorDark,
                           ),
-                          Text(
-                            c.currentOffer.value?.customer?.maybeWhen(
-                                    customer: (id,
-                                            firstName,
-                                            lastName,
-                                            phone,
-                                            email,
-                                            imageUrl,
-                                            company,
-                                            position,
-                                            city,
-                                            students) =>
-                                        '$firstName, $company',
-                                    orElse: () => '') ??
-                                '',
-                            style: const TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 14,
-                              color: textColorLight,
-                              fontWeight: FontWeight.w300,
-                            ),
+                        ),
+                        Text(
+                          c.currentOffer.value?.customer?.maybeWhen(
+                                  customer: (id,
+                                          firstName,
+                                          lastName,
+                                          phone,
+                                          email,
+                                          imageUrl,
+                                          company,
+                                          position,
+                                          city,
+                                          students) =>
+                                      '$firstName, $company',
+                                  orElse: () => '') ??
+                              '',
+                          style: const TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: textColorLight,
+                            fontWeight: FontWeight.w300,
                           ),
-                          const SizedBox(height: 6.0),
-                          Row(
-                            children: [
-                              Text(
-                                c.currentOffer.value?.employment ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: endGradientColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                        ),
+                        const SizedBox(height: 6.0),
+                        Row(
+                          children: [
+                            Text(
+                              c.currentOffer.value?.employment ?? '',
+                              style: const TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                                color: endGradientColor,
+                                fontWeight: FontWeight.w500,
                               ),
-                              const Spacer(),
-                              Text(
-                                c.currentOffer.value?.salary ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: endGradientColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              c.currentOffer.value?.salary ?? '',
+                              style: const TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                                color: endGradientColor,
+                                fontWeight: FontWeight.w500,
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 16.0),
-                          ..._buildTextWithBullets(
-                              c.currentOffer.value?.description ?? ''),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16.0),
+                        ..._buildTextWithBullets(
+                            c.currentOffer.value?.description ?? ''),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    CustomButton(
-                      text: 'agree'.tr,
-                      isActive: true,
-                      width: containerWidth - 44,
-                      onTap: () {},
-                    ),
-                    const SizedBox(height: 39),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 16),
+                  CustomButton(
+                    text: 'agree'.tr,
+                    isActive: true,
+                    width: containerWidth - 44,
+                    onTap: () {},
+                  ),
+                  const SizedBox(height: 39),
+                ],
               ),
             ),
           ),
@@ -914,12 +959,13 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _contacts(BuildContext context) {
+  Widget _contracts(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/png/oops.png'),
+          const Spacer(),
+          Image.asset(Assets.resourcePngOops),
           Text(
             'message'.tr,
             softWrap: true,
@@ -927,10 +973,11 @@ class _MainPageState extends State<MainPage> {
             style: const TextStyle(
               fontSize: 16,
               fontFamily: 'Roboto',
-              color: textColorDark,
+              color: textColorWhite,
               fontWeight: FontWeight.w500,
             ),
           ),
+          const Spacer(),
         ],
       ),
     );
@@ -948,10 +995,10 @@ class _MainPageState extends State<MainPage> {
           );
         },
         child: mainController.profileScreenState.value.when(
-          main: () => _profileMainState(controller),
-          settings: () => _profileSettingState(controller),
-          resume: () => _profileResumeState(controller),
-        ),
+            main: () => _profileMainState(controller),
+            settings: () => _profileSettingState(controller),
+            resume: () => _profileResumeState(controller),
+            notifications: () => _profileNotificationsState(controller)),
       ),
     );
   }
@@ -983,7 +1030,7 @@ class _MainPageState extends State<MainPage> {
               fontFamily: 'Roboto',
               fontSize: 12,
               fontWeight: FontWeight.w400,
-              color: textColorLight,
+              color: textColorWhite,
             ),
           ),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -1005,7 +1052,7 @@ class _MainPageState extends State<MainPage> {
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const SvgIcon(
-              assetName: 'assets/svg/resume.svg',
+              assetName: Assets.resourceSvgResume,
               height: 24,
               color: textColorDark,
             ),
@@ -1019,12 +1066,15 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {},
+            onTap: () {
+              mainController.profileScreenState.value =
+                  const ProfileScreenState.resume();
+            },
           ),
         ListTile(
           contentPadding: EdgeInsets.zero,
           leading: const SvgIcon(
-            assetName: 'assets/svg/notification.svg',
+            assetName: Assets.resourceSvgNotification,
             height: 24,
             color: textColorDark,
           ),
@@ -1036,12 +1086,15 @@ class _MainPageState extends State<MainPage> {
                 color: textColorDark,
               )),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-          onTap: () {},
+          onTap: () {
+            mainController.profileScreenState.value =
+                const ProfileScreenState.notifications();
+          },
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
           trailing: const SvgIcon(
-            assetName: 'assets/svg/exit.svg',
+            assetName: Assets.resourceSvgExit,
             height: 24,
             color: Colors.red,
           ),
@@ -1053,7 +1106,9 @@ class _MainPageState extends State<MainPage> {
                 fontWeight: FontWeight.w400,
                 color: Colors.red),
           ),
-          onTap: () {},
+          onTap: () {
+            Get.offAllNamed(Routes.START);
+          },
         ),
       ],
     );
@@ -1065,7 +1120,7 @@ class _MainPageState extends State<MainPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 22.0, top: 16.0, bottom: 16.0),
+          padding: const EdgeInsets.only(left: 22.0, top: 4.0, bottom: 16.0),
           child: GestureDetector(
             onTap: () {
               mainController.profileScreenState.value =
@@ -1074,12 +1129,12 @@ class _MainPageState extends State<MainPage> {
             child: Row(
               children: [
                 const Icon(Icons.arrow_back_ios,
-                    color: textColorLight, size: 16),
+                    color: colorWhiteTransparent, size: 16),
                 const SizedBox(width: 6),
                 Text(
                   'back'.tr,
                   style: const TextStyle(
-                    color: textColorLight,
+                    color: colorWhiteTransparent,
                     fontSize: 16,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w400,
@@ -1161,7 +1216,7 @@ class _MainPageState extends State<MainPage> {
                     child: Row(
                       children: [
                         const SvgIcon(
-                          assetName: 'assets/svg/bin.svg',
+                          assetName: Assets.resourceSvgBin,
                           height: 24,
                           color: Colors.red,
                         ),
@@ -1179,7 +1234,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 100),
               ],
             ),
           ),
@@ -1233,9 +1288,237 @@ class _MainPageState extends State<MainPage> {
         [];
   }
 
-  Widget _profileResumeState(GlobalPersonController c) {
-    return const Center(
-      child: Text('Setting State'),
+  Widget _profileResumeState(GlobalPersonController globalController) {
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    final mainController = Get.find<MainPageController>();
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 22.0, top: 4.0, bottom: 8.0),
+          child: GestureDetector(
+            onTap: () {
+              mainController.profileScreenState.value =
+                  const ProfileScreenState.main();
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.arrow_back_ios,
+                    color: colorWhiteTransparent, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  'back'.tr,
+                  style: const TextStyle(
+                    color: colorWhiteTransparent,
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 4),
+                GradientBorderContainer(
+                  width: containerWidth,
+                  child: Padding(
+                    padding: const EdgeInsets.all(27),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LabeledInputField(
+                          label: 'first_and_last_name'.tr,
+                          controller: TextEditingController(
+                              text:
+                                  '${globalController.person?.firstName} ${globalController.person?.lastName}'),
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 16),
+                        LabeledInputField(
+                          label: 'phone_number'.tr,
+                          controller: TextEditingController(
+                              text: globalController.person?.phone),
+                          keyboardType: TextInputType.phone,
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 16),
+                        LabeledInputField(
+                          label: 'email'.tr,
+                          controller: TextEditingController(
+                              text: globalController.person?.email),
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 22),
+                ..._studentSpecificWidgetsForResume(globalController),
+                const SizedBox(height: 22),
+                CustomButton(
+                  text: 'save_changes'.tr,
+                  isActive: true,
+                  width: containerWidth,
+                  onTap: () {},
+                ),
+                const SizedBox(height: 110),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _studentSpecificWidgetsForResume(
+      GlobalPersonController globalController) {
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    return globalController.person?.maybeWhen(
+          orElse: () => [],
+          student: (
+            id,
+            firstName,
+            lastName,
+            imageUrl,
+            position,
+            phone,
+            email,
+            employment,
+            experience,
+            education,
+            skills,
+            desiredSalary,
+            offers,
+            description,
+          ) =>
+              [
+            GradientBorderContainer(
+              width: containerWidth,
+              child: Padding(
+                padding: const EdgeInsets.all(27),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabeledInputField(
+                      label: 'position'.tr,
+                      controller: TextEditingController(text: position ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'type_of_employment'.tr,
+                      controller: TextEditingController(text: employment ?? ''),
+                      keyboardType: TextInputType.phone,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 22),
+            GradientBorderContainer(
+              width: containerWidth,
+              child: Padding(
+                padding: const EdgeInsets.all(27),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabeledInputField(
+                      label: 'work_experience'.tr,
+                      controller: TextEditingController(text: experience ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'education'.tr,
+                      controller: TextEditingController(text: education ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'key_skills'.tr,
+                      controller: TextEditingController(text: skills ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 16),
+                    LabeledInputField(
+                      label: 'desired_salary'.tr,
+                      controller:
+                          TextEditingController(text: desiredSalary ?? ''),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ) ??
+        [];
+  }
+
+  Widget _profileNotificationsState(GlobalPersonController c) {
+    final mainController = Get.find<MainPageController>();
+    final containerWidth = MediaQuery.of(context).size.width - 20 * 2;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 22.0, top: 4.0, bottom: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                mainController.profileScreenState.value =
+                    const ProfileScreenState.main();
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.arrow_back_ios,
+                      color: colorWhiteTransparent, size: 16),
+                  const SizedBox(width: 6),
+                  Text(
+                    'back'.tr,
+                    style: const TextStyle(
+                      color: colorWhiteTransparent,
+                      fontSize: 16,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const Spacer(),
+          Image.asset(Assets.resourcePngOops),
+          Text(
+            'message2'.tr,
+            softWrap: true,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 16,
+              fontFamily: 'Roboto',
+              color: textColorWhite,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 22),
+          CustomButton(
+            text: 'allow_notifications'.tr,
+            isActive: true,
+            width: containerWidth,
+            onTap: () {},
+          ),
+          const Spacer(),
+        ],
+      ),
     );
   }
 }

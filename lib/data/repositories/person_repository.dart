@@ -16,7 +16,7 @@ class MockPersonRepository implements PersonRepository {
         employment: 'Повна зайнятість',
         experience: 'Немає',
         imageUrl: 'assets/png/adelina.png',
-        position: 'Junior UI/UX Designer',
+        position: 'UI/UX дизайнер',
         skills: 'Figma, Adobe Photoshop, Adobe Illustrator, Adobe XD',
         description:
             'Ключові навички:\n• Figma\n• Adobe Photoshop\n• Adobe Illustrator\n\nОсвіта:\n• Вища, ПЗВО “ІТ СТЕП Університет”\n\nДосвід роботи:\n• Немає\n\nТип зайнятості\n• Повна зайнятість, віддалена');
@@ -70,7 +70,7 @@ class MockPersonRepository implements PersonRepository {
                 skills: skills,
                 desiredSalary: desiredSalary,
                 offers: List.generate(
-                    4,
+                    40,
                     (index) => OfferEntity(
                           id: 'o$index',
                           title: 'Junior UI/UX Designer',
@@ -108,7 +108,7 @@ class MockPersonRepository implements PersonRepository {
                 position: position,
                 city: city,
                 students: List.generate(
-                  4,
+                  40,
                   (index) => _getStudent().copyWith(id: 's${index + 1}'),
                 ),
               ),

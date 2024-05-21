@@ -7,4 +7,5 @@ class ProfileScreenState with _$ProfileScreenState {
   const factory ProfileScreenState.main() = _Main;
   const factory ProfileScreenState.settings() = _Settings;
   const factory ProfileScreenState.resume() = _Resume;
+  const factory ProfileScreenState.notifications() = _Notifications;
 }

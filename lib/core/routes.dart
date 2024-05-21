@@ -21,16 +21,22 @@ class AppPages {
       name: Routes.START,
       page: () => const StartPage(),
       binding: StartPageBindings(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: Routes.AUTH,
       page: () => AuthPage(),
       binding: AuthPageBindings(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: Routes.MAIN,
       page: () => const MainPage(),
       binding: OffersPageBindings(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
   ];
 }
