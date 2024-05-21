@@ -1,6 +1,6 @@
 class Assets {
   Assets._();
-  
+
   /// Assets for resourcePngAdelina
   /// assets/png/adelina.png
   static const String resourcePngAdelina = "assets/png/adelina.png";
@@ -77,4 +77,3 @@ class Assets {
   /// assets/svg/user.svg
   static const String resourceSvgUser = "assets/svg/user.svg";
 }
-
