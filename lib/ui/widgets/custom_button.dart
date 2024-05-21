@@ -71,13 +71,13 @@ class _CustomButtonState extends State<CustomButton> {
       onTapUp: _onTapUp,
       onTapCancel: _onTapCancel,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 100),
         width: widget.width ?? 272,
         height: widget.height ?? 49,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(32),
           border: Border.all(color: borderColor, width: 1),
         ),
         child: Row(

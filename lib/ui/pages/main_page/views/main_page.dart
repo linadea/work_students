@@ -174,7 +174,12 @@ class _MainPageState extends State<MainPage> {
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(Assets.resourceSvgBackground, fit: BoxFit.cover),
+          Positioned.fill(
+            child: SvgPicture.asset(
+              Assets.resourceSvgBackground,
+              fit: BoxFit.cover,
+            ),
+          ),
           Padding(
             padding: EdgeInsets.only(top: appBarHeight),
             child: IndexedStack(

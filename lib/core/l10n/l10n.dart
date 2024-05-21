@@ -72,7 +72,7 @@ class Messages extends Translations {
           'contracts': 'Контракти',
           'my_contracts': 'Moї контракти',
           'profile': 'Профіль',
-          'my_profile': 'Мії профіль',
+          'my_profile': 'Мій профіль',
           'students': 'Студенти',
           'message':
               'Упс!\nУ Вас ще немає контрактів.\nТут будуть відображатись діючі угоди.',

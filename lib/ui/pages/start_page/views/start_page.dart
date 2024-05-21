@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:work_students/ui/widgets/svg_icon.dart';
 
 import '../../../../core/constants/assets.dart';
 import '../../../../core/constants/colors.dart';
@@ -23,10 +24,15 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      // backgroundColor: backgroundColor,
       body: Stack(
         children: [
-          SvgPicture.asset(Assets.resourceSvgBackground, fit: BoxFit.cover),
+          Positioned.fill(
+            child: SvgPicture.asset(
+              Assets.resourceSvgBackground,
+              fit: BoxFit.cover,
+            ),
+          ),
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -39,13 +45,12 @@ class _StartPageState extends State<StartPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: SvgPicture.asset(
-                          Assets.resourceSvgLogo,
-                          height: 100,
-                        ),
-                      ),
+                      const Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: SvgIcon(
+                              assetName: Assets.resourceSvgLogo,
+                              height: 100,
+                              color: textColorWhite)),
                       Container(
                         width: 219,
                         height: 48,
@@ -58,7 +63,7 @@ class _StartPageState extends State<StartPage> {
                             Text(
                               'WORK [STUDENTS]',
                               style: TextStyle(
-                                color: textColorDark,
+                                color: textColorWhite,
                                 fontFamily: 'Roboto',
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
